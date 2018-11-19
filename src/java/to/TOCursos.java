@@ -9,11 +9,12 @@ package to;
  *
  * @author 71500286
  */
-public class TOWorkshops {
+public class TOCursos {
     private int id;
     private String nome;
-    private String descricao;
-    private String data;
+    private String area;
+    private int base_salarial;
+    private int pos_rank;
 
     /**
      * @return the id
@@ -44,31 +45,45 @@ public class TOWorkshops {
     }
 
     /**
-     * @return the descricao
+     * @return the area
      */
-    public String getDescricao() {
-        return descricao;
+    public String getArea() {
+        return area;
     }
 
     /**
-     * @param descricao the descricao to set
+     * @param area the area to set
      */
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setArea(String area) {
+        this.area = area;
     }
 
     /**
-     * @return the data
+     * @return the base_salarial
      */
-    public String getData() {
-        return data;
+    public int getBase_salarial() {
+        return base_salarial;
     }
 
     /**
-     * @param data the data to set
+     * @param base_salarial the base_salarial to set
      */
-    public void setData(String data) {
-        this.data = data;
+    public void setBase_salarial(int base_salarial) {
+        this.base_salarial = base_salarial;
+    }
+
+    /**
+     * @return the pos_rank
+     */
+    public int getPos_rank() {
+        return pos_rank;
+    }
+
+    /**
+     * @param pos_rank the pos_rank to set
+     */
+    public void setPos_rank(int pos_rank) {
+        this.pos_rank = pos_rank;
     }
     
     
