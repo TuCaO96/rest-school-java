@@ -5,21 +5,26 @@
  */
 package service;
 
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import to.TOUsuario;
 
 /**
  * REST Web Service
  *
  * @author 71500286
  */
-@Path("usuario")
+@Path("usuarios")
 public class UsuarioResource {
 
     @Context
@@ -32,22 +37,105 @@ public class UsuarioResource {
     }
 
     /**
-     * Retrieves representation of an instance of service.UsuarioResource
+     * Retrieves representation of an instance of service.UsuariosResource
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public String getXml() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
+    @Produces("application/json; charset=utf-8")
+    public List<TOUsuario> getUsuarios() throws Exception {
+        List<TOUsuario> usuarios = BOUsuario.getAll();
+        
+        return usuarios;
+    }
+    
+    /**
+     * Retrieves representation of an instance of service.UsuariosResource
+     * @param id
+     * @return an instance of java.lang.String
+     */
+    @GET
+    @Path("{id}")
+    @Produces("application/json; charset=utf-8")
+    public TOUsuario getUsuario(@PathParam("id") int id) throws Exception {
+        TOUsuario usuario = BOUsuario.getOne(id);
+        
+        if(usuario == null){
+            throw new ClassNotFoundException("Usuário não encontrado");
+        }
+        
+        return usuario;
     }
 
     /**
-     * PUT method for updating or creating an instance of UsuarioResource
-     * @param content representation for the resource
+     * POST method for updating or creating an instance of UsuariosResource
+     * @param usuario representation for the resource
+     */
+    @POST
+    @Consumes("application/json; charset=utf-8")
+    @Produces("application/json; charset=utf-8")
+    @Path("autenticar")
+    public TOUsuario postLogin(TOUsuario usuario) throws ClassNotFoundException, Exception {
+        TOUsuario usuario1 = BOUsuario.getOneByEmail(usuario.getEmail());
+        if(usuario1 == null || !usuario1.getPassword().equals(usuario.getPassword())){
+            throw new ClassNotFoundException("Usuário e/ou senha inválidos");
+        }
+        
+        return usuario1;
+    }
+    
+    /**
+     * POST method for updating or creating an instance of UsuariosResource
+     * @param usuario representation for the resource
+     */
+    @POST
+    @Consumes("application/json; charset=utf-8")
+    @Produces("application/json; charset=utf-8")
+    public TOUsuario postUsuario(TOUsuario usuario) throws Exception {
+        boolean success = BOUsuario.save(usuario);
+        
+        if(!success){
+            return null;
+        }
+        
+        return usuario;
+    }
+    
+    /**
+     * DELETE method for updating or creating an instance of UsuariosResource
+     * @param id
+     */
+    @DELETE
+    @Path("{id}")
+    @Consumes("application/json; charset=utf-8")
+    @Produces("application/json; charset=utf-8")
+    public TOUsuario deleteUsuario(@PathParam("id") int id) throws Exception {
+        boolean success = BOUsuario.delete(id);
+        
+        if(!success){
+            throw new ClassNotFoundException("Erro ao remover usuário");
+        }
+        
+        return null;
+    }
+    
+    /**
+     * PUT method for updating or creating an instance of UsuariosResource
+     * @param id
+     * @param usuario
      */
     @PUT
-    @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(String content) {
+    @Path("{id}")
+    @Consumes("application/json; charset=utf-8")
+    @Produces("application/json; charset=utf-8")
+    public boolean putUsuario(@PathParam("id") int id, TOUsuario usuario) throws Exception {
+        if(BOUsuario.getOne(id) == null){
+            throw new ClassNotFoundException("Usuário não encontrado");
+        }
+        
+        usuario.setId(id);
+        
+        boolean success = BOUsuario.save(usuario);
+        
+        return success;
     }
 }
