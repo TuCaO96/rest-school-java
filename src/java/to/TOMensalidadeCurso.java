@@ -14,4 +14,62 @@ public class TOMensalidadeCurso {
     private TOCursos curso;
     private double valor;
     private double periodo;
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the curso
+     */
+    public TOCursos getCurso() {
+        return curso;
+    }
+
+    /**
+     * @param curso the curso to set
+     */
+    public void setCurso(TOCursos curso) {
+        this.curso = curso;
+    }
+
+    /**
+     * @return the valor
+     */
+    public double getValor() {
+        return valor;
+    }
+
+    /**
+     * @param valor the valor to set
+     */
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    /**
+     * @return the periodo
+     */
+    public double getPeriodo() {
+        return periodo;
+    }
+
+    /**
+     * @param periodo the periodo to set
+     */
+    public void setPeriodo(double periodo) {
+        this.periodo = periodo;
+    }
+    
+    
 }

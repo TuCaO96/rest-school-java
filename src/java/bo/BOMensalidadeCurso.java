@@ -5,8 +5,11 @@
  */
 package bo;
 
+import dao.DAOMensalidadeCurso;
 import fw.Data;
 import java.sql.Connection;
+import java.util.List;
+import to.TOMensalidadeCurso;
 
 /**
  *
@@ -16,31 +19,31 @@ public class BOMensalidadeCurso {
     
     public static void inserir(TOMensalidadeCurso t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOMensalidadeCurso.inserir(c, t);
+            DAOMensalidadeCurso.save(c, t);
         }
     }
 
     public static void alterar(TOMensalidadeCurso t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOMensalidadeCurso.alterar(c, t);
+            DAOMensalidadeCurso.save(c, t);
         }
     }
 
     public static void excluir(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOMensalidadeCurso.excluir(c, id);
+            DAOMensalidadeCurso.delete(c, id);
         }
     }
 
     public static TOMensalidadeCurso obter(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            return DAOMensalidadeCurso.obter(c, id);
+            return DAOMensalidadeCurso.getOne(c, id);
         }
     }
 
     public static List<TOMensalidadeCurso> lista() throws Exception {
         try (Connection c = Data.openConnection()) {
-            return DAOMensalidadeCurso.lista(c);
+            return DAOMensalidadeCurso.getAll(c);
         }
     }
     
