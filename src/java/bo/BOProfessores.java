@@ -5,9 +5,11 @@
  */
 package bo;
 
+import dao.DAOProfessores;
 import fw.Data;
 import java.sql.Connection;
 import java.util.List;
+import to.TOProfessores;
 
 /**
  *
@@ -18,38 +20,38 @@ public class BOProfessores {
     public static void inserir(List<TOProfessores> l) throws Exception {
         try (Connection c = Data.openConnection()) {
             for (TOProfessores t : l) {
-                DAOProfessores.inserir(c, t);
+                DAOProfessores.save(c, t);
             }
         }
     }
 
     public static void inserir(TOProfessores t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOProfessores.inserir(c, t);
+            DAOProfessores.save(c, t);
         }
     }
 
     public static void alterar(TOProfessores t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOProfessores.alterar(c, t);
+            DAOProfessores.save(c, t);
         }
     }
 
     public static void excluir(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOProfessores.excluir(c, id);
+            DAOProfessores.delete(c, id);
         }
     }
 
     public static TOProfessores obter(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            return DAOProfessores.obter(c, id);
+            return DAOProfessores.getOne(c, id);
         }
     }
 
     public static List<TOProfessores> lista() throws Exception {
         try (Connection c = Data.openConnection()) {
-            return DAOProfessores.lista(c);
+            return DAOProfessores.getAll(c);
         }
     }
     

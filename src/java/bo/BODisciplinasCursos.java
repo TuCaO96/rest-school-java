@@ -5,9 +5,11 @@
  */
 package bo;
 
+import dao.DAODisciplinasCursos;
 import fw.Data;
 import java.sql.Connection;
 import java.util.List;
+import to.TODisciplinasCurso;
 
 /**
  *
@@ -15,13 +17,13 @@ import java.util.List;
  */
 public class BODisciplinasCursos {
     
-    public static void inserir(TODisciplinasCursos t) throws Exception {
+    public static void inserir(TODisciplinasCurso t) throws Exception {
         try (Connection c = Data.openConnection()) {
             DAODisciplinasCursos.inserir(c, t);
         }
     }
 
-    public static void alterar(TODisciplinasCursos t) throws Exception {
+    public static void alterar(TODisciplinasCurso t) throws Exception {
         try (Connection c = Data.openConnection()) {
             DAODisciplinasCursos.alterar(c, t);
         }
@@ -33,13 +35,13 @@ public class BODisciplinasCursos {
         }
     }
 
-    public static TODisciplinasCursos obter(int id) throws Exception {
+    public static TODisciplinasCurso obter(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
             return DAODisciplinasCursos.obter(c, id);
         }
     }
 
-    public static List<TODisciplinasCursos> lista() throws Exception {
+    public static List<TODisciplinasCurso> lista() throws Exception {
         try (Connection c = Data.openConnection()) {
             return DAODisciplinasCursos.lista(c);
         }

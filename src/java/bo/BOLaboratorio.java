@@ -5,8 +5,11 @@
  */
 package bo;
 
+import dao.DAOLaboratorio;
 import fw.Data;
 import java.sql.Connection;
+import java.util.List;
+import to.TOLaboratorios;
 
 
 /**
@@ -15,13 +18,13 @@ import java.sql.Connection;
  */
 public class BOLaboratorio {
 
-    public static void inserir(TOLaboratorio t) throws Exception {
+    public static void inserir(TOLaboratorios t) throws Exception {
         try (Connection c = Data.openConnection()) {
             DAOLaboratorio.inserir(c, t);
         }
     }
 
-    public static void alterar(TOLaboratorio t) throws Exception {
+    public static void alterar(TOLaboratorios t) throws Exception {
         try (Connection c = Data.openConnection()) {
             DAOLaboratorio.alterar(c, t);
         }
@@ -33,13 +36,13 @@ public class BOLaboratorio {
         }
     }
 
-    public static TOLaboratorio obter(int id) throws Exception {
+    public static TOLaboratorios obter(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
             return DAOLaboratorio.obter(c, id);
         }
     }
 
-    public static List<TOLaboratorio> lista() throws Exception {
+    public static List<TOLaboratorios> lista() throws Exception {
         try (Connection c = Data.openConnection()) {
             return DAOLaboratorio.lista(c);
         }

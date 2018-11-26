@@ -5,9 +5,11 @@
  */
 package bo;
 
+import dao.DAOCursos;
 import fw.Data;
 import java.sql.Connection;
 import java.util.List;
+import to.TOCursos;
 
 /**
  *
@@ -15,41 +17,41 @@ import java.util.List;
  */
 public class BOCursos {
     
-    public static void inserir(List<TOCurso> l) throws Exception {
+    public static void inserir(List<TOCursos> l) throws Exception {
         try (Connection c = Data.openConnection()) {
-            for (TOCurso t : l) {
-                DAOCurso.inserir(c, t);
+            for (TOCursos t : l) {
+                DAOCursos.save(c, t);
             }
         }
     }
 
-    public static void inserir(TOCurso t) throws Exception {
+    public static void inserir(TOCursos t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOCurso.inserir(c, t);
+            DAOCursos.save(c, t);
         }
     }
 
-    public static void alterar(TOCurso t) throws Exception {
+    public static void alterar(TOCursos t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOCurso.alterar(c, t);
+            DAOCursos.save(c, t);
         }
     }
 
     public static void excluir(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOCurso.excluir(c, id);
+            DAOCursos.delete(c, id);
         }
     }
 
-    public static TOCurso obter(int id) throws Exception {
+    public static TOCursos obter(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            return DAOCurso.obter(c, id);
+            return DAOCursos.getOne(c, id);
         }
     }
 
-    public static List<TOCurso> lista() throws Exception {
+    public static List<TOCursos> lista() throws Exception {
         try (Connection c = Data.openConnection()) {
-            return DAOCurso.lista(c);
+            return DAOCursos.getAll(c);
         }
     }
     

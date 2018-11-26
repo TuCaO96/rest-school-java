@@ -5,9 +5,11 @@
  */
 package bo;
 
+import dao.DAOWorkshop;
 import fw.Data;
 import java.sql.Connection;
 import java.util.List;
+import to.TOWorkshops;
 
 /**
  *
@@ -15,41 +17,41 @@ import java.util.List;
  */
 public class BOWorkshop {
     
-    public static void inserir(List<TOWorkshop> l) throws Exception {
+    public static void inserir(List<TOWorkshops> l) throws Exception {
         try (Connection c = Data.openConnection()) {
-            for (TOWorkshop t : l) {
-                DAOWorkshop.inserir(c, t);
+            for (TOWorkshops t : l) {
+                DAOWorkshop.save(c, t);
             }
         }
     }
 
-    public static void inserir(TOWorkshop t) throws Exception {
+    public static void inserir(TOWorkshops t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOWorkshop.inserir(c, t);
+            DAOWorkshop.save(c, t);
         }
     }
 
-    public static void alterar(TOWorkshop t) throws Exception {
+    public static void alterar(TOWorkshops t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOWorkshop.alterar(c, t);
+            DAOWorkshop.save(c, t);
         }
     }
 
     public static void excluir(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOProfessores.excluir(c, id);
+            DAOWorkshop.delete(c, id);
         }
     }
 
     public static TOWorkshops obter(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            return DAOWorkshop.obter(c, id);
+            return DAOWorkshop.getOne(c, id);
         }
     }
 
-    public static List<TOWorkshop> lista() throws Exception {
+    public static List<TOWorkshops> lista() throws Exception {
         try (Connection c = Data.openConnection()) {
-            return DAOWorkshop.lista(c);
+            return DAOWorkshop.getAll(c);
         }
     }
     
