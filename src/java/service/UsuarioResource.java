@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import to.TOUsuario;
+import bo.BOUsuario;
 
 /**
  * REST Web Service
@@ -75,7 +76,7 @@ public class UsuarioResource {
     @Path("autenticar")
     public TOUsuario postLogin(TOUsuario usuario) throws ClassNotFoundException, Exception {
         TOUsuario usuario1 = BOUsuario.getOneByEmail(usuario.getEmail());
-        if(usuario1 == null || !usuario1.getPassword().equals(usuario.getPassword())){
+        if(usuario1 == null || !usuario1.getSenha().equals(usuario.getSenha())){
             throw new ClassNotFoundException("Usuário e/ou senha inválidos");
         }
         
