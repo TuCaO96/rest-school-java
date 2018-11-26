@@ -1,5 +1,6 @@
 package to;
 
+import fw.Criptografia;
 import java.sql.Timestamp;
 
 /**
@@ -56,8 +57,10 @@ public class TOUsuario {
     /**
      * @param senha the senha to set
      */
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setSenha(String senha) throws Exception {
+        if(!senha.equals(this.senha)){
+            this.senha = Criptografia.sha1(senha);
+        }
     }
 
     /**
