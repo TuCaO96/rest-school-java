@@ -17,29 +17,50 @@ import to.TOCursos;
  */
 public class BOCursos {
     
-    public static void inserir(List<TOCursos> l) throws Exception {
+    /*public static boolean inserir(List<TOCursos> l) throws Exception {
         try (Connection c = Data.openConnection()) {
             for (TOCursos t : l) {
                 DAOCursos.save(c, t);
             }
         }
-    }
+    }*/
 
-    public static void inserir(TOCursos t) throws Exception {
+    public static boolean inserir(TOCursos t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOCursos.save(c, t);
+            if(DAOCursos.save(c, t)){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 
-    public static void alterar(TOCursos t) throws Exception {
+    public static boolean alterar(TOCursos t) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOCursos.save(c, t);
+            if(DAOCursos.save(c, t)){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 
-    public static void excluir(int id) throws Exception {
+    public static boolean excluir(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOCursos.delete(c, id);
+            if(DAOCursos.delete(c, id)){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 
