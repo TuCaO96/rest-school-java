@@ -58,9 +58,7 @@ public class TOUsuario {
      * @param senha the senha to set
      */
     public void setSenha(String senha) throws Exception {
-        if(!senha.equals(this.senha)){
-            this.senha = Criptografia.sha1(senha);
-        }
+        this.senha = senha;
     }
 
     /**
