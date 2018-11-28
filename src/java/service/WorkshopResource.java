@@ -16,8 +16,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
-import to.TOUsuario;
-import bo.BOUsuario;
 import bo.BOWorkshop;
 import fw.Cache;
 import to.TOWorkshops;
@@ -100,7 +98,7 @@ public class WorkshopResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOUsuario deleteWorkshop(@PathParam("id") int id) throws Exception {
+    public TOWorkshops deleteWorkshop(@PathParam("id") int id) throws Exception {
         BOWorkshop.excluir(id);
         
         return null;

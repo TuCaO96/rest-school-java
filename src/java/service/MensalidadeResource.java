@@ -6,7 +6,6 @@
 package service;
 
 import bo.BOMensalidadeCurso;
-import bo.BOWorkshop;
 import fw.Cache;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -20,7 +19,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import to.TOMensalidadeCurso;
-import to.TOWorkshops;
 
 /**
  *
@@ -88,7 +86,7 @@ public class MensalidadeResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public boolean putWorkshop(@PathParam("id") int id, TOMensalidadeCurso workshop) throws Exception {
+    public boolean putMensalidade(@PathParam("id") int id, TOMensalidadeCurso workshop) throws Exception {
         if(BOMensalidadeCurso.obter(id) == null){
             throw new ClassNotFoundException("Workshop não encontrado");
         }        
