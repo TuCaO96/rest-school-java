@@ -6,6 +6,7 @@
 package service;
 
 import bo.BODisciplinasCursos;
+import fw.Cache;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -34,9 +35,17 @@ public class DisciplinasResource {
     
     @GET
     @Produces("application/json; charset=utf-8")
-    public List<TODisciplinasCurso> getDisciplinas() throws Exception {
-        List<TODisciplinasCurso> disciplinas = BODisciplinasCursos.lista();        
-        return disciplinas;
+    public List<TODisciplinasCurso> getDisciplinas() throws Exception {        
+        Object o = Cache.getCache("disciplina", "lista");
+        
+        if (o == null) {
+            List<TODisciplinasCurso> disciplinas = BODisciplinasCursos.lista();        
+            Cache.setCache("disciplina", "lista", disciplinas, 2);
+            
+            return disciplinas;
+        }else {
+            return (List<TODisciplinasCurso>) o;
+        }
     }
     
     @GET
