@@ -19,6 +19,7 @@ import javax.ws.rs.PathParam;
 import to.TOUsuario;
 import bo.BOUsuario;
 import bo.BOWorkshop;
+import fw.Cache;
 import to.TOWorkshops;
 
 /**
@@ -45,9 +46,18 @@ public class WorkshopResource {
     @GET
     @Produces("application/json; charset=utf-8")
     public List<TOWorkshops> getWorkshops() throws Exception {
-        List<TOWorkshops> workshops = BOWorkshop.lista();
         
-        return workshops;
+        Object o = Cache.getCache("workshop", "lista");
+
+        if (o == null) {
+            List<TOWorkshops> workshops = BOWorkshop.lista();
+            
+            Cache.setCache("workshop", "lista", workshops, 2);
+            
+            return workshops;
+        }else {
+            return (List<TOWorkshops>) o;
+        }
     }
     
     /**
