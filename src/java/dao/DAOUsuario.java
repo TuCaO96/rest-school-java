@@ -5,6 +5,7 @@
  */
 package dao;
 
+import fw.Criptografia;
 import fw.Data;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -36,14 +37,14 @@ public class DAOUsuario {
         if(usuario.getId() < 1){
             sql.append("insert into usuario (nome, email, senha, chave, expiracao, token)"
                 + "VALUES (\""+usuario.getNome()+"\", \""+usuario.getEmail()+"\","
-                        + "\""+usuario.getSenha()+"\", \"" + usuario.getChave() + "\""
+                        + "\""+Criptografia.sha1(usuario.getSenha())+"\", \"" + usuario.getChave() + "\""
                         + "\"" + usuario.getExpiracao() + "\""
                         + "\"" + usuario.getToken() + "\")");
         }
         else{
             sql.append("update usuario "
                 + "SET name = \""+usuario.getNome()+"\", email = \""+usuario.getEmail()+"\","
-                        + " senha =\""+usuario.getSenha()+"\""
+                        + " senha =\""+Criptografia.sha1(usuario.getSenha())+"\""
                         + " chave =\"" + usuario.getChave() + "\""
                         + " expiracao =\"" + usuario.getExpiracao()+ "\""
                         + " token =\"" + usuario.getToken()+ "\""

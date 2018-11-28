@@ -18,15 +18,16 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import to.TOUsuario;
 import bo.BOUsuario;
-import fw.Criptografia;
+import bo.BOWorkshop;
+import to.TOWorkshops;
 
 /**
  * REST Web Service
  *
  * @author 71500286
  */
-@Path("usuarios")
-public class UsuarioResource {
+@Path("workshops")
+public class WorkshopResource {
 
     @Context
     private UriInfo context;
@@ -34,7 +35,7 @@ public class UsuarioResource {
     /**
      * Creates a new instance of UsuarioResource
      */
-    public UsuarioResource() {
+    public WorkshopResource() {
     }
 
     /**
@@ -43,10 +44,10 @@ public class UsuarioResource {
      */
     @GET
     @Produces("application/json; charset=utf-8")
-    public List<TOUsuario> getUsuarios() throws Exception {
-        List<TOUsuario> usuarios = BOUsuario.getAll();
+    public List<TOWorkshops> getWorkshops() throws Exception {
+        List<TOWorkshops> workshops = BOWorkshop.lista();
         
-        return usuarios;
+        return workshops;
     }
     
     /**
@@ -57,32 +58,16 @@ public class UsuarioResource {
     @GET
     @Path("{id}")
     @Produces("application/json; charset=utf-8")
-    public TOUsuario getUsuario(@PathParam("id") int id) throws Exception {
-        TOUsuario usuario = BOUsuario.getOne(id);
+    public TOWorkshops getWorkshop(@PathParam("id") int id) throws Exception {
+        TOWorkshops workshop = BOWorkshop.obter(id);
         
-        if(usuario == null){
-            throw new ClassNotFoundException("Usuário não encontrado");
+        if(workshop == null){
+            throw new ClassNotFoundException("Workshop não encontrado");
         }
         
-        return usuario;
+        return workshop;
     }
 
-    /**
-     * POST method for updating or creating an instance of UsuariosResource
-     * @param usuario representation for the resource
-     */
-    @POST
-    @Consumes("application/json; charset=utf-8")
-    @Produces("application/json; charset=utf-8")
-    @Path("autenticar")
-    public TOUsuario postLogin(TOUsuario usuario) throws ClassNotFoundException, Exception {
-        TOUsuario usuario1 = BOUsuario.getOneByEmail(usuario.getEmail());
-        if(usuario1 == null || !usuario1.getSenha().equals(Criptografia.sha1(usuario.getSenha()))){
-            throw new ClassNotFoundException("Usuário e/ou senha inválidos");
-        }
-        
-        return usuario1;
-    }
     
     /**
      * POST method for updating or creating an instance of UsuariosResource
@@ -91,14 +76,10 @@ public class UsuarioResource {
     @POST
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOUsuario postUsuario(TOUsuario usuario) throws Exception {
-        boolean success = BOUsuario.save(usuario);
+    public TOWorkshops postWorkshop(TOWorkshops workshop) throws Exception {
+        BOWorkshop.inserir(workshop);
         
-        if(!success){
-            return null;
-        }
-        
-        return usuario;
+        return workshop;
     }
     
     /**
@@ -109,11 +90,11 @@ public class UsuarioResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOUsuario deleteUsuario(@PathParam("id") int id) throws Exception {
+    public TOUsuario deleteWorkshop(@PathParam("id") int id) throws Exception {
         boolean success = BOUsuario.delete(id);
         
         if(!success){
-            throw new ClassNotFoundException("Erro ao remover usuário");
+            throw new ClassNotFoundException("Erro ao remover workshop");
         }
         
         return null;
@@ -128,15 +109,13 @@ public class UsuarioResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public boolean putUsuario(@PathParam("id") int id, TOUsuario usuario) throws Exception {
+    public boolean putWorkshop(@PathParam("id") int id, TOWorkshops workshop) throws Exception {
         if(BOUsuario.getOne(id) == null){
-            throw new ClassNotFoundException("Usuário não encontrado");
+            throw new ClassNotFoundException("Workshop não encontrado");
         }
         
-        usuario.setId(id);
+        BOWorkshop.alterar(workshop);
         
-        boolean success = BOUsuario.save(usuario);
-        
-        return success;
+        return true;
     }
 }
