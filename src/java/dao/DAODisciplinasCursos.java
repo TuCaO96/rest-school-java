@@ -36,12 +36,12 @@ public class DAODisciplinasCursos {
         
     }
     
-    public static void excluir(Connection c, int id) throws Exception {
+    public static boolean excluir(Connection c, int id) throws Exception {
         
         StringBuilder sql = new StringBuilder();
         sql.append(" delete from disciplinas_curso where id = ? ");
         
-       Data.executeUpdate(c, sql.toString(), id);
+       return Data.executeUpdate(c, sql.toString(), id) > 0;
     }
     
     public static TODisciplinasCurso obter(Connection c, int id) throws Exception { /* colocar cache */
