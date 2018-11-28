@@ -7,6 +7,8 @@ package bo;
 
 import dao.DAOUsuario;
 import fw.Data;
+import fw.DateTime;
+import fw.Guid;
 import java.sql.Connection;
 import java.util.List;
 import to.TOUsuario;
@@ -18,8 +20,19 @@ import to.TOUsuario;
 public class BOUsuario {
     public static boolean login(String email, String senha) throws Exception{
         try (Connection c = Data.openConnection()){
+            
             if(DAOUsuario.login(c, email, senha)){
-                return true;
+                TOUsuario t = new TOUsuario();
+                t.setEmail(email);
+                t.setSenha(senha);
+                t.setToken(Guid.getString());
+                
+                DateTime d = DateTime.now();
+                d.addHour(5);
+                
+                t.setExpiracao(d.getTimestamp());
+                
+                return DAOUsuario.atualizaToken(c, t);
             }
             
             return false;
