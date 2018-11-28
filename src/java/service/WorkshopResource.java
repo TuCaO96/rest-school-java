@@ -71,7 +71,7 @@ public class WorkshopResource {
     
     /**
      * POST method for updating or creating an instance of UsuariosResource
-     * @param usuario representation for the resource
+     * @param workshop representation for the resource
      */
     @POST
     @Consumes("application/json; charset=utf-8")
