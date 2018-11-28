@@ -141,4 +141,13 @@ public class DAOUsuario {
         
         return l;
     }
+    
+    public static boolean atualizaToken(Connection c, TOUsuario t) throws Exception {
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" update usuario set token = ?, expiracao = ? where email = ? ");
+
+        return Data.executeUpdate(c, sql.toString(), t.getToken(), t.getExpiracao(), t.getEmail()) > 0;
+
+    }
 }
