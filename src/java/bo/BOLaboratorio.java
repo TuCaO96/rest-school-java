@@ -18,10 +18,11 @@ import to.TOLaboratorios;
  */
 public class BOLaboratorio {
 
-    public static void inserir(TOLaboratorios t) throws Exception {
+    public static boolean inserir(TOLaboratorios t) throws Exception {
         try (Connection c = Data.openConnection()) {
             DAOLaboratorio.inserir(c, t);
-        }
+            return true;
+        }        
     }
 
     public static void alterar(TOLaboratorios t) throws Exception {
@@ -30,9 +31,13 @@ public class BOLaboratorio {
         }
     }
 
-    public static void excluir(int id) throws Exception {
+    public static boolean excluir(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOLaboratorio.excluir(c, id);
+            if(DAOLaboratorio.excluir(c, id)){
+                return true;
+            }else{
+                return false;
+            }
         }
     }
 

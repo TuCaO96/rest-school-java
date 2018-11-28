@@ -18,30 +18,30 @@ import to.TOLaboratorios;
  */
 public class DAOLaboratorio {
  
-    public static void inserir(Connection c, TOLaboratorios t) throws Exception {
+    public static boolean inserir(Connection c, TOLaboratorios t) throws Exception {
         
         StringBuilder sql = new StringBuilder();
         sql.append(" insert into laboratorios (nome, disciplinas, localidade_bloco, qtd_labo) values ( ?, ?, ?, ?) ");
         
-        Data.executeUpdate(c, sql.toString(), t.getNome(), t.getDisciplinas(), t.getLocalidade_bloco(), t.getQtd_labo());
+        return Data.executeUpdate(c, sql.toString(), t.getNome(), t.getDisciplinas(), t.getLocalidade_bloco(), t.getQtd_labo()) > 0;
         
     }
     
-    public static void alterar(Connection c, TOLaboratorios t) throws Exception {
+    public static boolean alterar(Connection c, TOLaboratorios t) throws Exception {
         
         StringBuilder sql = new StringBuilder();
         sql.append(" update laboratorios set nome = ?, disciplina = ?, localidade_bloco = ?, qtd_labo = ? where id = ? ");
         
-        Data.executeUpdate(c, sql.toString(), t.getNome(), t.getDisciplinas(), t.getLocalidade_bloco(), t.getQtd_labo());
+        return Data.executeUpdate(c, sql.toString(), t.getNome(), t.getDisciplinas(), t.getLocalidade_bloco(), t.getQtd_labo()) > 0;
         
     }
     
-    public static void excluir(Connection c, int id) throws Exception {
+    public static boolean excluir(Connection c, int id) throws Exception {
         
        StringBuilder sql = new StringBuilder();
        sql.append(" delete from laboratorios where id = ? ");
        
-       Data.executeUpdate(c, sql.toString(), id);
+       return Data.executeUpdate(c, sql.toString(), id) > 0;
     }
     
     public static TOLaboratorios obter(Connection c, int id) throws Exception { /* colocar cache */
@@ -59,7 +59,9 @@ public class DAOLaboratorio {
             }else{
                 return null;
             }            
-        }        
+        }catch(Exception e){
+            return null;
+        }
     }
     
     public static List<TOLaboratorios> lista(Connection c) throws Exception { /* colocar cache */
@@ -79,6 +81,8 @@ public class DAOLaboratorio {
                 t.setQtd_labo(rs.getInt("qtd_labo"));
                 l.add(t);
             }
+        }catch(Exception e){
+            return null;
         }
         return l;
     }
