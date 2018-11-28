@@ -5,20 +5,22 @@
  */
 package service;
 
+import bo.BOProfessores;
+import bo.BOWorkshop;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.MediaType;
+import to.TOProfessores;
 import to.TOUsuario;
-import bo.BOUsuario;
-import bo.BOWorkshop;
 import to.TOWorkshops;
 
 /**
@@ -26,16 +28,16 @@ import to.TOWorkshops;
  *
  * @author 71500286
  */
-@Path("workshops")
-public class WorkshopResource {
+@Path("generic")
+public class ProfessorResource {
 
     @Context
     private UriInfo context;
 
     /**
-     * Creates a new instance of UsuarioResource
+     * Creates a new instance of ProfessorResource
      */
-    public WorkshopResource() {
+    public ProfessorResource() {
     }
 
     /**
@@ -44,10 +46,10 @@ public class WorkshopResource {
      */
     @GET
     @Produces("application/json; charset=utf-8")
-    public List<TOWorkshops> getWorkshops() throws Exception {
-        List<TOWorkshops> workshops = BOWorkshop.lista();
+    public List<TOProfessores> getProfessores() throws Exception {
+        List<TOProfessores> professores = BOProfessores.lista();
         
-        return workshops;
+        return professores;
     }
     
     /**
@@ -58,28 +60,28 @@ public class WorkshopResource {
     @GET
     @Path("{id}")
     @Produces("application/json; charset=utf-8")
-    public TOWorkshops getWorkshop(@PathParam("id") int id) throws Exception {
-        TOWorkshops workshop = BOWorkshop.obter(id);
+    public TOProfessores getProfessor(@PathParam("id") int id) throws Exception {
+        TOProfessores professor = BOProfessores.obter(id);
         
-        if(workshop == null){
-            throw new ClassNotFoundException("Workshop não encontrado");
+        if(professor == null){
+            throw new ClassNotFoundException("Professor não encontrado");
         }
         
-        return workshop;
+        return professor;
     }
 
     
     /**
      * POST method for updating or creating an instance of UsuariosResource
-     * @param workshop representation for the resource
+     * @param professor representation for the resource
      */
     @POST
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOWorkshops postWorkshop(TOWorkshops workshop) throws Exception {
-        BOWorkshop.inserir(workshop);
+    public TOProfessores postProfessor(TOProfessores professor) throws Exception {
+        BOProfessores.inserir(professor);
         
-        return workshop;
+        return professor;
     }
     
     /**
@@ -90,8 +92,8 @@ public class WorkshopResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOUsuario deleteWorkshop(@PathParam("id") int id) throws Exception {
-        BOWorkshop.excluir(id);
+    public TOProfessores deleteProfessor(@PathParam("id") int id) throws Exception {
+        BOProfessores.excluir(id);
         
         return null;
     }
@@ -105,12 +107,12 @@ public class WorkshopResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public boolean putWorkshop(@PathParam("id") int id, TOWorkshops workshop) throws Exception {
-        if(BOWorkshop.obter(id) == null){
-            throw new ClassNotFoundException("Workshop não encontrado");
+    public boolean putProfessor(@PathParam("id") int id, TOProfessores professor) throws Exception {
+        if(BOProfessores.obter(id) == null){
+            throw new ClassNotFoundException("Professor não encontrado");
         }
         
-        BOWorkshop.alterar(workshop);
+        BOProfessores.alterar(professor);
         
         return true;
     }

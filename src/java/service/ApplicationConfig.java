@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
         resources.add(service.CursosResource.class);
         resources.add(service.EnemCortesResource.class);
         resources.add(service.LaboratorioResource.class);
+        resources.add(service.ProfessorResource.class);
         resources.add(service.UsuarioResource.class);
         resources.add(service.WorkshopResource.class);
     }
