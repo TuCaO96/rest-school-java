@@ -6,6 +6,8 @@
 package service;
 
 import bo.BOMensalidadeCurso;
+import bo.BOWorkshop;
+import fw.Cache;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -18,6 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import to.TOMensalidadeCurso;
+import to.TOWorkshops;
 
 /**
  *
@@ -34,15 +37,24 @@ public class MensalidadeResource {
     @GET
     @Produces("application/json; charset=utf-8")
     public List<TOMensalidadeCurso> getMensalidades() throws Exception {
-        List<TOMensalidadeCurso> mensalidade = BOMensalidadeCurso.lista();
-        
-        return mensalidade;
+        Object o = Cache.getCache("mensalidade", "lista");
+
+        if (o == null) {
+            List<TOMensalidadeCurso> mensalidades = BOMensalidadeCurso.lista();
+            
+            Cache.setCache("mensalidade", "lista", mensalidades, 2);
+            
+            return mensalidades;
+        }else {
+            return (List<TOMensalidadeCurso>) o;
+        }
     }
     
     @GET
     @Path("{id}")
     @Produces("application/json; charset=utf-8")
     public TOMensalidadeCurso getMensalidade(@PathParam("id") int id) throws Exception {
+        
         TOMensalidadeCurso mensalidade = BOMensalidadeCurso.obter(id);
         
         if(mensalidade == null){

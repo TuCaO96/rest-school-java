@@ -6,6 +6,7 @@
 package service;
 
 import bo.BOProfessores;
+import fw.Cache;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -43,9 +44,17 @@ public class ProfessorResource {
     @GET
     @Produces("application/json; charset=utf-8")
     public List<TOProfessores> getProfessores() throws Exception {
-        List<TOProfessores> professores = BOProfessores.lista();
-        
-        return professores;
+        Object o = Cache.getCache("professor", "lista");
+
+        if (o == null) {
+            List<TOProfessores> professores = BOProfessores.lista();
+            
+            Cache.setCache("professor", "lista", professores, 2);
+            
+            return professores;
+        }else {
+            return (List<TOProfessores>) o;
+        }
     }
     
     /**

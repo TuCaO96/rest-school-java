@@ -5,6 +5,7 @@
  */
 package service;
 
+import bo.BOProfessores;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import to.TOUsuario;
 import bo.BOUsuario;
+import fw.Cache;
 import fw.Criptografia;
+import to.TOProfessores;
 
 /**
  * REST Web Service
@@ -46,7 +49,17 @@ public class UsuarioResource {
     public List<TOUsuario> getUsuarios() throws Exception {
         List<TOUsuario> usuarios = BOUsuario.getAll();
         
-        return usuarios;
+        Object o = Cache.getCache("usuario", "lista");
+
+        if (o == null) {
+            List<TOProfessores> professores = BOProfessores.lista();
+            
+            Cache.setCache("usuario", "lista", professores, 2);
+            
+            return usuarios;
+        }else {
+            return (List<TOUsuario>) o;
+        }
     }
     
     /**
