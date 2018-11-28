@@ -6,6 +6,7 @@
 package service;
 
 import bo.BOEnemCortes;
+import fw.Cache;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -35,10 +36,17 @@ public class EnemCortesResource {
     
     @GET
     @Produces("application/json; charset=utf-8")
-    public List<TOEnemCortes> getEnemCortes() throws Exception {
-        List<TOEnemCortes> cortes = BOEnemCortes.lista();
-        
-        return cortes;
+    public List<TOEnemCortes> getEnemCortes() throws Exception {        
+        Object o = Cache.getCache("enem", "lista");
+        if (o == null) {
+            List<TOEnemCortes> cortes = BOEnemCortes.lista();
+            
+            Cache.setCache("enem", "lista", cortes, 2);
+            
+            return cortes;
+        }else {
+            return (List<TOEnemCortes>) o;
+        }        
     }
     
     /**
@@ -50,7 +58,7 @@ public class EnemCortesResource {
     @GET
     @Path("{id}")
     @Produces("application/json; charset=utf-8")
-    public TOEnemCortes getEnemCortes(@PathParam("id") int id) throws Exception {
+    public TOEnemCortes getEnemCorte(@PathParam("id") int id) throws Exception {
         TOEnemCortes cortes = BOEnemCortes.obter(id);        
         if(cortes == null){
             throw new ClassNotFoundException("Notas de Corte não encontrado");

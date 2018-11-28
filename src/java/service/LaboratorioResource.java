@@ -6,6 +6,7 @@
 package service;
 
 import bo.BOLaboratorio;
+import fw.Cache;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -34,16 +35,23 @@ public class LaboratorioResource {
     
     @GET
     @Produces("application/json; charset=utf-8")
-    public List<TOLaboratorios> getLaboratorio() throws Exception {
-        List<TOLaboratorios> cursos = BOLaboratorio.lista();
-        
-        return cursos;        
+    public List<TOLaboratorios> getLaboratorios() throws Exception {        
+        Object o = Cache.getCache("curso", "lista");
+        if (o == null) {
+            List<TOLaboratorios> cursos = BOLaboratorio.lista();
+            
+            Cache.setCache("curso", "lista", cursos, 2);
+            
+            return cursos;
+        }else {
+            return (List<TOLaboratorios>) o;
+        }       
     }
     
     @GET
     @Path("{id}")
     @Produces("application/json; charset=utf-8")
-    public TOLaboratorios getCurso(@PathParam("id") int id) throws Exception {
+    public TOLaboratorios getLaboratorio(@PathParam("id") int id) throws Exception {
         TOLaboratorios cursos = BOLaboratorio.obter(id);
         
         if(cursos == null){
@@ -55,7 +63,7 @@ public class LaboratorioResource {
     @POST
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOLaboratorios postCurso(TOLaboratorios curso) throws Exception {
+    public TOLaboratorios postLaboratorio(TOLaboratorios curso) throws Exception {
         boolean success = BOLaboratorio.inserir(curso);        
         if(!success){
             return null;
