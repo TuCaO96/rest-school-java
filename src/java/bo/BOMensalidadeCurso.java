@@ -29,9 +29,12 @@ public class BOMensalidadeCurso {
         }
     }
 
-    public static void excluir(int id) throws Exception {
+    public static boolean excluir(int id) throws Exception {
         try (Connection c = Data.openConnection()) {
-            DAOMensalidadeCurso.delete(c, id);
+            return DAOMensalidadeCurso.delete(c, id);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 

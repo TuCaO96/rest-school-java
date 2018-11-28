@@ -6,7 +6,6 @@
 package service;
 
 import bo.BOProfessores;
-import bo.BOWorkshop;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,10 +17,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.MediaType;
 import to.TOProfessores;
-import to.TOUsuario;
-import to.TOWorkshops;
 
 /**
  * REST Web Service
@@ -101,7 +97,7 @@ public class ProfessorResource {
     /**
      * PUT method for updating or creating an instance of UsuariosResource
      * @param id
-     * @param workshop
+     * @param professor
      */
     @PUT
     @Path("{id}")
