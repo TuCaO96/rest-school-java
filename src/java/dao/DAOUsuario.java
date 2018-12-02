@@ -150,4 +150,30 @@ public class DAOUsuario {
         return Data.executeUpdate(c, sql.toString(), t.getToken(), t.getExpiracao(), t.getEmail()) > 0;
 
     }
+    
+    public static TOUsuario obterPelaChave(Connection c, String chave) throws Exception {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" select id, nome, email, chave, expiracao, token from usuario ");
+        sql.append(" where chave = ? ");
+
+        try (ResultSet rs = Data.executeQuery(c, sql.toString(), chave)) {
+
+            if (rs.next()) {
+
+                TOUsuario u = new TOUsuario();
+                u.setId(rs.getInt("id"));
+                u.setNome(rs.getString("nome"));
+                u.setEmail(rs.getString("email"));
+                u.setChave(rs.getString("chave"));
+                u.setToken(rs.getString("token"));
+                u.setExpiracao(rs.getTimestamp("expiracao"));
+
+                return u;
+
+            } else {
+                return null;
+            }
+
+        }
+    }
 }

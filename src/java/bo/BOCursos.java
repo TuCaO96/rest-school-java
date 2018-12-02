@@ -17,14 +17,6 @@ import to.TOCursos;
  */
 public class BOCursos {
     
-    /*public static boolean inserir(List<TOCursos> l) throws Exception {
-        try (Connection c = Data.openConnection()) {
-            for (TOCursos t : l) {
-                DAOCursos.save(c, t);
-            }
-        }
-    }*/
-
     public static boolean inserir(TOCursos t) throws Exception {
         try (Connection c = Data.openConnection()) {
             if(DAOCursos.save(c, t)){

@@ -6,6 +6,7 @@
 package bo;
 
 import dao.DAOUsuario;
+import fw.Criptografia;
 import fw.Data;
 import fw.DateTime;
 import fw.Guid;
@@ -41,6 +42,25 @@ public class BOUsuario {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+    
+    public static boolean autenticado(String chave, String token) throws Exception {
+
+        try (Connection c = Data.openConnection()) {
+
+            TOUsuario u = DAOUsuario.obterPelaChave(c, chave);
+
+            DateTime agora = DateTime.now();
+
+            if (u != null && token != null && !token.isEmpty() && u.getExpiracao().after(agora.getTimestamp())
+                    && token.equals(Criptografia.sha1(u.getToken() + "COTEMIG2018"))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
     }
     
     public static boolean save(TOUsuario usuario) throws Exception{

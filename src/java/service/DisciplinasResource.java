@@ -6,11 +6,14 @@
 package service;
 
 import bo.BODisciplinasCursos;
+import bo.BOUsuario;
 import fw.Cache;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -29,6 +32,9 @@ public class DisciplinasResource {
     
     @Context
     private UriInfo context;
+    
+    @Context
+    private HttpServletResponse response;
 
     public DisciplinasResource() {
     }
@@ -62,20 +68,27 @@ public class DisciplinasResource {
     @POST
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TODisciplinasCurso postDisciplina(TODisciplinasCurso disciplina) throws Exception {
-        BODisciplinasCursos.inserir(disciplina);        
-        return disciplina;
+    public TODisciplinasCurso postDisciplina(TODisciplinasCurso disciplina, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+            BODisciplinasCursos.inserir(disciplina);        
+            return disciplina;
+        }else{
+            response.sendError(401);
+            return null;
+        }
     }
     
     @DELETE
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TODisciplinasCurso deleteDisciplina(@PathParam("id") int id) throws Exception {
-        boolean success = BODisciplinasCursos.excluir(id);        
-        if(!success){
-            throw new ClassNotFoundException("Erro ao remover workshop");
-        }        
+    public TODisciplinasCurso deleteDisciplina(@PathParam("id") int id, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+            boolean success = BODisciplinasCursos.excluir(id);        
+            if(!success){
+                throw new ClassNotFoundException("Erro ao remover workshop");
+            }
+        }   
         return null;
     }
     
@@ -83,16 +96,15 @@ public class DisciplinasResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public boolean putWorkshop(@PathParam("id") int id, TODisciplinasCurso workshop) throws Exception {
-        if(BODisciplinasCursos.obter(id) == null){
-            throw new ClassNotFoundException("Workshop não encontrado");
-        }        
-        BODisciplinasCursos.alterar(workshop);        
-        return true;
-    }
-    
-    
-    
-    
-    
+    public boolean putWorkshop(@PathParam("id") int id, TODisciplinasCurso workshop, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+            if(BODisciplinasCursos.obter(id) == null){
+                throw new ClassNotFoundException("Workshop não encontrado");
+            }        
+            BODisciplinasCursos.alterar(workshop);  
+            return true;
+        }else{
+            return false;
+        }
+    }    
 }
