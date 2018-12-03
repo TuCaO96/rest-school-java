@@ -6,14 +6,17 @@
 package service;
 
 import bo.BOProfessores;
+import bo.BOUsuario;
 import fw.Cache;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
@@ -25,12 +28,15 @@ import to.TOProfessores;
  *
  * @author 71500286
  */
-@Path("generic")
+@Path("professores")
 public class ProfessorResource {
 
     @Context
     private UriInfo context;
 
+    @Context
+    private HttpServletResponse response;
+    
     /**
      * Creates a new instance of ProfessorResource
      */
@@ -83,10 +89,15 @@ public class ProfessorResource {
     @POST
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOProfessores postProfessor(TOProfessores professor) throws Exception {
-        BOProfessores.inserir(professor);
+    public TOProfessores postProfessor(TOProfessores professor, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+            BOProfessores.inserir(professor);
         
         return professor;
+        } else{
+            response.sendError(401);
+            return null;
+        }
     }
     
     /**
@@ -97,10 +108,17 @@ public class ProfessorResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOProfessores deleteProfessor(@PathParam("id") int id) throws Exception {
-        BOProfessores.excluir(id);
+    public TOProfessores deleteProfessor(@PathParam("id") int id, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+            BOProfessores.excluir(id);
         
-        return null;
+            return null;
+        } else{
+            response.sendError(401);
+            return null;
+        }
+        
+        
     }
     
     /**
@@ -112,13 +130,18 @@ public class ProfessorResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public boolean putProfessor(@PathParam("id") int id, TOProfessores professor) throws Exception {
-        if(BOProfessores.obter(id) == null){
-            throw new ClassNotFoundException("Professor não encontrado");
+    public boolean putProfessor(@PathParam("id") int id, TOProfessores professor, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+            if(BOProfessores.obter(id) == null){
+                throw new ClassNotFoundException("Professor não encontrado");
+            }
+
+            BOProfessores.alterar(professor);
+        
+            return true;
+        } else{
+            response.sendError(401);
+            return false;
         }
-        
-        BOProfessores.alterar(professor);
-        
-        return true;
     }
 }

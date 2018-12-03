@@ -5,6 +5,7 @@
  */
 package service;
 
+import bo.BOUsuario;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,6 +19,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import bo.BOWorkshop;
 import fw.Cache;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.HeaderParam;
 import to.TOWorkshops;
 
 /**
@@ -30,6 +33,9 @@ public class WorkshopResource {
 
     @Context
     private UriInfo context;
+    
+    @Context
+    private HttpServletResponse response;
 
     /**
      * Creates a new instance of UsuarioResource
@@ -84,10 +90,17 @@ public class WorkshopResource {
     @POST
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOWorkshops postWorkshop(TOWorkshops workshop) throws Exception {
-        BOWorkshop.inserir(workshop);
+    public TOWorkshops postWorkshop(TOWorkshops workshop, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+            BOWorkshop.inserir(workshop);
         
-        return workshop;
+            return workshop;
+        }
+         else{
+            response.sendError(401);
+            return null;
+        }
+        
     }
     
     /**
@@ -98,10 +111,18 @@ public class WorkshopResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public TOWorkshops deleteWorkshop(@PathParam("id") int id) throws Exception {
-        BOWorkshop.excluir(id);
+    public TOWorkshops deleteWorkshop(@PathParam("id") int id, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+           BOWorkshop.excluir(id);
         
-        return null;
+            return null;
+        }
+         else{
+            response.sendError(401);
+            return null;
+        }
+        
+        
     }
     
     /**
@@ -113,13 +134,19 @@ public class WorkshopResource {
     @Path("{id}")
     @Consumes("application/json; charset=utf-8")
     @Produces("application/json; charset=utf-8")
-    public boolean putWorkshop(@PathParam("id") int id, TOWorkshops workshop) throws Exception {
-        if(BOWorkshop.obter(id) == null){
-            throw new ClassNotFoundException("Workshop não encontrado");
+    public boolean putWorkshop(@PathParam("id") int id, TOWorkshops workshop, @HeaderParam("chave") String chave, @HeaderParam("token") String token) throws Exception {
+        if(BOUsuario.autenticado(chave, token)){
+            if(BOWorkshop.obter(id) == null){
+                throw new ClassNotFoundException("Workshop não encontrado");
+            }
+
+            BOWorkshop.alterar(workshop);
+
+            return true;
         }
-        
-        BOWorkshop.alterar(workshop);
-        
-        return true;
+         else{
+            response.sendError(401);
+            return false;
+        }
     }
 }

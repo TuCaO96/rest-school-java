@@ -27,7 +27,7 @@ import to.TODisciplinasCurso;
  *
  * @author 71500430
  */
-@Path("disciplina")
+@Path("disciplinas")
 public class DisciplinasResource {
     
     @Context
