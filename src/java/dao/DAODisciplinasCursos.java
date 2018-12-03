@@ -64,7 +64,7 @@ public class DAODisciplinasCursos {
     public static List<TODisciplinasCurso> lista(Connection c) throws Exception { /* colocar cache */
         
         StringBuilder sql = new StringBuilder();
-        sql.append("select id, nome, descricao, periodo from disciplinas_curso order by nome asc ");
+        sql.append("select * from disciplinas_curso");
         
         List<TODisciplinasCurso> l = new ArrayList<>();
         

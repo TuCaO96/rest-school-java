@@ -67,7 +67,7 @@ public class DAOLaboratorio {
     public static List<TOLaboratorios> lista(Connection c) throws Exception { /* colocar cache */
         
         StringBuilder sql = new StringBuilder();
-        sql.append(" select id, nome, disciplina, localidade_bloco, qtd_labo from laboratorios order by nome asc ");
+        sql.append("select * from laboratorios");
         
         List<TOLaboratorios> l = new ArrayList<>();
         

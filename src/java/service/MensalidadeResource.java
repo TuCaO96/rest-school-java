@@ -78,7 +78,7 @@ public class MensalidadeResource {
         return mensalidade;
         }
         else{
-            response.sendError(401);
+            response.sendError(401, "Você precisa estar autenticado");
             return null;
         }
     }
